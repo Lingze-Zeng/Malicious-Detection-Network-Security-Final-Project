@@ -40,8 +40,30 @@ temp = []
 symb_add = ['-', '@', '~', '_', '%', '?', '&', '#']
 sensitive = ['secure', 'account', 'webscr', 'login', 'ebayisapi', 'sign in', 'banking', 'confirm']
 
-for item in df['url']:
-    num_sym = getnumsymb('-', item)
-    temp.append(num_sym)
-df['-'] = temp
-print(df)
+def main():
+    for symb in symb_add:
+        temp = []
+        for item in df['url']:
+            num_sym = getnumsymb(symb, item)
+            temp.append(num_sym)
+        df[symb] = temp
+
+    urlength = []
+    digitnum = []
+    sensitivenum = []
+    hostlength = []
+    querylength = []
+    for item in df['url']:
+        urlength.append(geturlength(item))
+        digitnum.append(getdigitnum(item))
+        sensitivenum.append(getsensitivenum(item))
+        hostlength.append(gethostnamelength(item))
+        querylength.append(getquerylength(item))
+    df['urlength'] = urlength
+    df['digitnum'] = digitnum
+    df['sensitivenum'] = sensitivenum
+    df['hostlength'] = hostlength
+    df['querylength'] = querylength
+    print(df)
+
+main()
