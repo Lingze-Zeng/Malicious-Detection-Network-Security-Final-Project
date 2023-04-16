@@ -1,4 +1,5 @@
 import pandas as pd
+from urllib.parse import urlsplit, urlparse, parse_qs
 
 df = pd.read_csv('malicious_phish.csv', nrows = 10)
 print(df['url'])
@@ -26,6 +27,15 @@ def getsensitivenum(url):
         if i in url:
             count += 1
     return count
+
+def gethostnamelength(url):
+    base_url = "{0.scheme}://{0.netloc}/".format(urlsplit(url))
+    return len(base_url)
+
+def getquerylength(url):
+    parse_result = urlparse(url)
+    return len(parse_result.query)
+
 temp = []
 symb_add = ['-', '@', '~', '_', '%', '?', '&', '#']
 sensitive = ['secure', 'account', 'webscr', 'login', 'ebayisapi', 'sign in', 'banking', 'confirm']
