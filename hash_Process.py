@@ -1,15 +1,19 @@
 import pandas as pd
-import numpy as np
+from tqdm import tqdm
 
 
 
 def duration(date):
-    return 2023 - int(date[:4])
+    if not pd.isna(date):
+        return 2023 - int(date)
+    else:
+        return 'None'
 
 
 
 def main():
-    df = pd.read_csv('ProcessedData_html_whois.csv', nrows = 2)
+    df = pd.read_csv('active_revise_date.csv')
+    print(df['state'])
     date = []
     state_set = set()
     state_map = pd.DataFrame()
@@ -19,12 +23,12 @@ def main():
     registrar_count = 0
 
     #get duration time
-    for i in df['regist_date']:
+    for i in tqdm(df['regist_date']):
         date.append(duration(i))
     df.drop('regist_date', axis=1, inplace=True)
     df['duration'] = date
 
-    for index, row in df.iterrows():
+    for index, row in tqdm(df.iterrows()):
         # hash table for states
         if pd.isna(row['state']) and 'None' not in state_set:
             state_set.add('None')
@@ -39,6 +43,7 @@ def main():
             df.at[index, 'state'] = state_map[row['state']].values[0]
         elif pd.isna(row['state']) and 'None' in state_set:
             df.at[index, 'state'] = state_map['None'].values[0]
+
         #hash table for registrar
         if pd.isna(row['registrar']) and 'None' not in registrar_set:
             registrar_set.add('None')
@@ -52,10 +57,10 @@ def main():
         if row['registrar'] in registrar_set:
             df.at[index, 'registrar'] = registrar_map[row['registrar']].values[0]
         elif pd.isna(row['registrar']) and 'None' in registrar_set:
-            df.at[index, 'registrar'] = registrar_map['registrar'].values[0]
-    
+            df.at[index, 'registrar'] = registrar_map['None'].values[0]
+
     state_map.to_csv('state_hash.csv')
     registrar_map.to_csv('registrar_hash.csv')
-    df.to_csv('out.csv')
-    #print(date)
+    df.to_csv('hashed_data.csv')
+
 main()

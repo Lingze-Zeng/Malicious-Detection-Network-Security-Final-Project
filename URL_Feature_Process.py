@@ -2,8 +2,8 @@ import pandas as pd
 from urllib.parse import urlsplit, urlparse, parse_qs
 from tqdm import tqdm
 import whois
-df = pd.read_csv('40000sample.csv')#, nrows=10)
-#print(df['registrar'])
+df = pd.read_csv('active_feature_extracted.csv')
+#print(df['url'])
 def getnumsymb(symb, url):
     count = 0
     for i in url:
@@ -54,7 +54,10 @@ def getwhois(url):
     except:
         pass
     try:
-        date = w['creation_date']
+        if type(w['creation_date']) is list:
+            date = w['creation_date'][0].year
+        else:
+         date = w['creation_date'].year
     except:
         pass
     try:
@@ -75,6 +78,7 @@ def main():
     respstatus = []
     active = []
     html = []
+
     for index, row in df_new.iterrows():
         if row['active bool'] == 1:
             url.append(row['url'])
@@ -96,6 +100,7 @@ def main():
             temp.append(num_sym)
 
         df_res[symb] = temp
+
     urlength = []
     digitnum = []
     sensitivenum = []
@@ -105,7 +110,7 @@ def main():
     creatime = []
     registrar = []
     state_name = []
-    for item in tqdm(df_res['url']):
+    for item in tqdm(df['url']):
         urlength.append(geturlength(item))
         digitnum.append(getdigitnum(item))
         sensitivenum.append(getsensitivenum(item))
@@ -122,9 +127,9 @@ def main():
     df_res['hostlength'] = hostlength
     df_res['querylength'] = querylength
     df_res['domain_name'] = domainname
-    df_res['regist_date'] = creatime
+    df['regist_date'] = creatime
     df_res['registrar'] = registrar
     df_res['state'] = state_name
-    df_res.to_csv('out.csv')
+    df.to_csv('out.csv')
 
 main()
