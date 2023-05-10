@@ -58,7 +58,7 @@ def main():
             df.at[index, 'registrar'] = registrar_map[row['registrar']].values[0]
         elif pd.isna(row['registrar']) and 'None' in registrar_set:
             df.at[index, 'registrar'] = registrar_map['None'].values[0]
-
+    #output hash table
     state_map.to_csv('state_hash.csv')
     registrar_map.to_csv('registrar_hash.csv')
     df.to_csv('hashed_data.csv')

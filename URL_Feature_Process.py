@@ -3,7 +3,7 @@ from urllib.parse import urlsplit, urlparse, parse_qs
 from tqdm import tqdm
 import whois
 df = pd.read_csv('active_feature_extracted.csv')
-#print(df['url'])
+# get special symbol count
 def getnumsymb(symb, url):
     count = 0
     for i in url:
@@ -11,9 +11,11 @@ def getnumsymb(symb, url):
             count += 1
     return count
 
+# get URL length
 def geturlength(url):
     return len(url)
 
+# get digit number count
 def getdigitnum(url):
     count = 0
     for i in url:
@@ -21,6 +23,7 @@ def getdigitnum(url):
             count += 1
     return count
 
+# get sensitive words count
 def getsensitivenum(url):
     count = 0
     for i in sensitive:
@@ -28,14 +31,17 @@ def getsensitivenum(url):
             count += 1
     return count
 
+# get host name length
 def gethostnamelength(url):
     base_url = "{0.scheme}://{0.netloc}/".format(urlsplit(url))
     return len(base_url)
 
+# get length part of query part
 def getquerylength(url):
     parse_result = urlparse(url)
     return len(parse_result.query)
 
+# get whois information
 def getwhois(url):
     try:
         w = whois.whois(url)
@@ -66,8 +72,9 @@ def getwhois(url):
         pass
     return registrar, domain, date, state
 
-temp = []
+# selected special symbols
 symb_add = ['-', '@', '~', '_', '%', '?', '&', '#']
+# selected sensitive words
 sensitive = ['secure', 'account', 'webscr', 'login', 'ebayisapi', 'sign in', 'banking', 'confirm']
 
 def main():
