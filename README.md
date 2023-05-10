@@ -14,4 +14,4 @@ The respository is used to store the code for Network Security final project. Th
 10. Use script 'random_forest.py' to train random forest model.
 11. Release comments for dropping content base features to focus on lexical and host base features. 
 12. Back to step 6 and train again.
-13. Release all comments to train teh model with all features.
+13. Release all comments to train the model with all features.
