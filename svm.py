@@ -11,6 +11,7 @@ df = pd.read_csv('output_4.csv')
 
 X = df.drop('label', axis=1)
 
+#drop the feature for url features
 # X =df.drop('-' ,axis= 1)
 # X =df.drop('@' ,axis= 1)
 # X =df.drop('~' ,axis= 1)
@@ -21,6 +22,7 @@ X = df.drop('label', axis=1)
 # X =df.drop('#' ,axis= 1)
 # X =df.drop('urlength' ,axis= 1)
 
+#drop the feature for HTML content features
 # X =df.drop('digitnum' ,axis= 1)
 # X =df.drop('sensitivenum' ,axis= 1)
 # X =df.drop('hostlength' ,axis= 1)
@@ -41,6 +43,7 @@ X = df.drop('label', axis=1)
 
 y = df['label']
 
+#scaler data to small region
 scaler = StandardScaler()
 X['urlength'] = scaler.fit_transform(X[['urlength']])
 X['digitnum'] = scaler.fit_transform(X[['digitnum']])
